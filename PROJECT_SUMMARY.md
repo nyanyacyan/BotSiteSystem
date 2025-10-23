@@ -172,9 +172,12 @@ User → React → Nginx → Django → PostgreSQL
 ### 環境変数
 以下の環境変数を `.env` で設定：
 - `DJANGO_SECRET_KEY`: Django シークレットキー
-- `DB_*`: データベース設定
-- `N8N_*`: n8n設定
-- `AWS_*`: AWS設定（本番環境）
+  - ⚠️ **重要**: 本番環境では強力でランダムなキーを生成してください
+  - **絶対に** バージョン管理にコミットしないでください
+  - 生成方法: `python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'`
+- `DB_*`: データベース設定（本番環境では安全なパスワードを使用）
+- `N8N_*`: n8n設定（本番環境では安全なパスワードを使用）
+- `AWS_*`: AWS設定（本番環境のみ）
 
 ## 📈 次のステップ
 
