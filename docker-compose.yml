@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: botsite_db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-botsite_db}
+      POSTGRES_USER: ${DB_USER:-botsite_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-botsite_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - botsite_network
+
+  # Redis for Celery
+  redis:
+    image: redis:7-alpine
+    container_name: botsite_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - botsite_network
+
+  # Django Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../deployment/docker/Dockerfile.backend
+    container_name: botsite_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - botsite_network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../deployment/docker/Dockerfile.frontend
+    container_name: botsite_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    networks:
+      - botsite_network
+
+  # n8n Automation
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: botsite_n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD:-admin}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./automation/workflows:/home/node/.n8n/workflows
+    networks:
+      - botsite_network
+
+  # Celery Worker
+  celery:
+    build:
+      context: ./backend
+      dockerfile: ../deployment/docker/Dockerfile.backend
+    container_name: botsite_celery
+    command: celery -A config worker -l info
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - botsite_network
+
+networks:
+  botsite_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  n8n_data:
