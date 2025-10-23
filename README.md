@@ -1,11 +1,5 @@
-もちろんです、Asoさん。
-ここまでの構想をすべて統合して、
-**「BotSiteSystem」プロジェクト全体の構築構想（全容）」**を、
-技術構成・フェーズ・機能・運用設計まで包括的にまとめますね💪
 
-⸻
-
-🧭 BotSiteSystem - 全体構築概要
+# BotSiteSystem - 全体構築概要
 
 目的：
 Django × React × n8n × AWS を用いた、
