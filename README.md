@@ -8,7 +8,7 @@ Django × React × n8n × AWS を用いた、
 
 ⸻
 
-🌐 1️⃣ システム概要
+## システム概要
 
 項目	内容
 プロジェクト名	BotSiteSystem
@@ -18,10 +18,10 @@ Django × React × n8n × AWS を用いた、
 構築スタイル	Dockerベースのローカル開発 → AWSデプロイ（EC2＋RDS＋S3）
 
 
-⸻
 
-🧩 2️⃣ システム構成図（論理構造）
 
+## システム構成図（論理構造）
+```
 📦 BotSiteSystem
 ├── backend/ (Django)
 │   ├── manage.py
@@ -45,11 +45,11 @@ Django × React × n8n × AWS を用いた、
 ├── docker-compose.yml
 ├── .env
 └── README_DOCKER_SETUP.md
+```
 
 
-⸻
 
-⚙️ 3️⃣ 技術構成と役割
+## 技術構成と役割
 
 要素	技術	役割
 バックエンド	Django + Django REST Framework	API提供・DB操作・認証
@@ -62,9 +62,9 @@ DB	PostgreSQL	永続データ管理（Docker or AWS RDS）
 通知	Slack / LINE / Gmail	イベント発生時のBot通知
 
 
-⸻
 
-🧱 4️⃣ コア機能一覧（v1構想）
+
+## コア機能一覧（v1構想）
 
 分類	機能	内容
 🧑‍💼 ユーザー管理	ログイン／登録／パスワードリセット	Django Auth or JWTベース
@@ -76,9 +76,9 @@ DB	PostgreSQL	永続データ管理（Docker or AWS RDS）
 🔗 外部連携	Webhook受信／送信	n8nと双方向連携（Zapier互換）
 
 
-⸻
 
-💬 5️⃣ n8n連携構想
+
+## n8n連携構想
 
 トリガー（イベント）	n8nでの処理	通知対象
 新規注文	Slackに「🛍️ 新しい注文が入りました！」通知	店舗管理者
@@ -92,7 +92,7 @@ Django側 → n8n Webhook（POST） → Slack/LINE/Gmail 連携
 
 ⸻
 
-☁️ 6️⃣ AWS運用設計（本番構築時）
+## AWS運用設計（本番構築時）
 
 要素	AWSサービス	内容
 Webサーバー	EC2	Djangoアプリ稼働（Gunicorn＋Nginx）
@@ -104,7 +104,7 @@ DB	RDS (PostgreSQL)	永続データベース
 
 ⸻
 
-🧭 7️⃣ 構築フェーズロードマップ（6ヶ月想定）
+## 構築フェーズロードマップ（6ヶ月想定）
 
 フェーズ	期間	内容	目的
 Phase 0	〜1週	Docker／Codespacesセットアップ	環境構築
@@ -117,7 +117,7 @@ Phase 5	6ヶ月目	改良・拡張	UI最適化／AI連携拡張
 
 ⸻
 
-🧠 8️⃣ 拡張構想（v2以降）
+## 拡張構想（v2以降）
 
 機能カテゴリ	内容
 🤖 ChatGPT API連携	自動返信Bot／顧客対応自動化
@@ -129,7 +129,7 @@ Phase 5	6ヶ月目	改良・拡張	UI最適化／AI連携拡張
 
 ⸻
 
-🎯 9️⃣ 学習・教育的活用
+## 学習・教育的活用
 
 BotSiteSystemは、
 メンティ教育にも最適な「実務型教材」 にできます。
@@ -139,21 +139,3 @@ BotSiteSystemは、
 中級	React連携＋API通信	Webアプリ開発力
 上級	n8n連携・AWSデプロイ	自動化・クラウド構築力
 実践	拡張・カスタム設計	案件開発スキル
-
-
-⸻
-
-💬 10️⃣ 一言まとめ
-
-BotSiteSystem は、
-「Django × React × n8n × AWS」を用いて、
-Botによる自動化を組み込んだWebアプリを構築・運用できる総合基盤。
-
-実案件、教育、ポートフォリオすべてに転用可能な、
-フルスタックエンジニア育成に最適なモデルプロジェクト です💪
-
-⸻
-
-もしよければこのまま
-📘「BotSiteSystem 設計書（v1仕様書）」としてMarkdown形式で出力できます。
-→ そのままGitHubの README.md に貼り付け可能に整えましょうか？
